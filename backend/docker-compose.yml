@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend
+  api:
+    build: .
+    container_name: interview-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/interview_db
+      - SECRET_KEY=${SECRET_KEY:-super-secret-key-change-in-production}
+      - APP_ENV=production
+      - APP_NAME=AI Mock Interview System
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WHISPER_USE_API=true
+      - CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
+    restart: unless-stopped
+    networks:
+      - interview-network
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: interview-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=interview_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - interview-network
+
+  # Adminer (Database GUI) - Optional
+  adminer:
+    image: adminer
+    container_name: interview-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - interview-network
+
+volumes:
+  postgres_data:
+  uploads_data:
+
+networks:
+  interview-network:
+    driver: bridge
