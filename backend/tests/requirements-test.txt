@@ -1,0 +1,24 @@
+# Test dependencies for AI Mock Interview System
+
+# Testing framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-timeout>=2.1.0
+
+# HTTP client for testing FastAPI
+httpx>=0.24.0
+
+# Async database support for testing
+aiosqlite>=0.19.0
+
+# Mocking and fixtures
+factory-boy>=3.3.0
+faker>=19.0.0
+
+# Code quality (optional but recommended)
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.1.0
+mypy>=1.5.0

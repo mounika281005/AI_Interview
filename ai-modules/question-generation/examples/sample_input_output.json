@@ -1,0 +1,315 @@
+{
+  "example_input": {
+    "job_role": "Senior Backend Engineer",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "Kubernetes",
+      "System Design"
+    ],
+    "experience_level": "senior",
+    "num_technical": 5,
+    "num_hr": 3,
+    "num_scenario": 2,
+    "industry": "FinTech",
+    "company_values": ["Innovation", "Security", "Customer Focus"],
+    "interview_duration_minutes": 60
+  },
+
+  "example_output": {
+    "job_role": "Senior Backend Engineer",
+    "experience_level": "senior",
+    "total_time_minutes": 58,
+    "generation_metadata": {
+      "skills_covered": ["Python", "FastAPI", "PostgreSQL", "Redis", "Docker", "Kubernetes", "System Design"],
+      "industry": "FinTech",
+      "company_values": ["Innovation", "Security", "Customer Focus"]
+    },
+
+    "technical_questions": [
+      {
+        "id": 1,
+        "question": "Design a high-throughput payment processing system that can handle 10,000 transactions per second. Explain your architecture choices, database design, and how you would ensure data consistency and fault tolerance.",
+        "category": "design",
+        "skill_tested": "System Design",
+        "difficulty": "hard",
+        "expected_points": [
+          "Microservices architecture with event-driven design",
+          "Message queue (Kafka/RabbitMQ) for async processing",
+          "Database sharding or partitioning strategy",
+          "ACID compliance with distributed transactions or saga pattern",
+          "Circuit breaker pattern for fault tolerance",
+          "Idempotency keys for duplicate prevention",
+          "Read replicas for scalability"
+        ],
+        "follow_up": "How would you handle a scenario where the payment gateway is down but you need to maintain data consistency?",
+        "time_minutes": 12,
+        "evaluation_criteria": {
+          "excellent": "Provides comprehensive architecture with clear trade-offs, mentions specific technologies, addresses consistency, scalability, and failure modes",
+          "good": "Covers main components and basic scalability considerations, understands consistency requirements",
+          "needs_improvement": "Missing critical components like message queues, unclear on consistency guarantees, no failure handling"
+        }
+      },
+      {
+        "id": 2,
+        "question": "Explain the differences between async/await in Python and how you would use it with FastAPI to optimize a service that makes multiple external API calls. What are the common pitfalls?",
+        "category": "conceptual",
+        "skill_tested": "Python",
+        "difficulty": "medium",
+        "expected_points": [
+          "Event loop and coroutines explanation",
+          "asyncio.gather for parallel execution",
+          "Difference between I/O-bound and CPU-bound operations",
+          "Connection pooling with httpx/aiohttp",
+          "Common pitfalls: blocking calls in async context, forgetting await",
+          "BackgroundTasks in FastAPI for non-blocking operations"
+        ],
+        "follow_up": "How would you handle timeout and retry logic for these external API calls?",
+        "time_minutes": 8,
+        "evaluation_criteria": {
+          "excellent": "Deep understanding of event loop, can explain when async provides benefits, knows common libraries and patterns",
+          "good": "Understands basic async/await usage, knows about gathering tasks",
+          "needs_improvement": "Confuses async with threading, unclear on when to use async"
+        }
+      },
+      {
+        "id": 3,
+        "question": "You notice that a PostgreSQL query that joins three tables is taking 5 seconds in production but was fast in development. Walk me through your debugging process and potential optimizations.",
+        "category": "problem-solving",
+        "skill_tested": "PostgreSQL",
+        "difficulty": "hard",
+        "expected_points": [
+          "Use EXPLAIN ANALYZE to understand query plan",
+          "Check for missing indexes on join columns and WHERE clauses",
+          "Data volume differences between dev and prod",
+          "Statistics and vacuum status",
+          "Query rewriting options (CTEs, subqueries, materialized views)",
+          "Connection pooling impact",
+          "Consider read replicas for heavy queries"
+        ],
+        "follow_up": "The query needs to run frequently for reporting. How would you architect a long-term solution?",
+        "time_minutes": 10,
+        "evaluation_criteria": {
+          "excellent": "Systematic debugging approach, mentions EXPLAIN ANALYZE first, understands query planner, proposes multiple solutions",
+          "good": "Knows to check indexes and use EXPLAIN, understands basic optimization",
+          "needs_improvement": "No structured debugging approach, jumps to solutions without diagnosis"
+        }
+      },
+      {
+        "id": 4,
+        "question": "How would you implement a rate limiter for an API using Redis? Describe the algorithm, data structures, and how you'd handle edge cases like clock skew in a distributed system.",
+        "category": "implementation",
+        "skill_tested": "Redis",
+        "difficulty": "medium",
+        "expected_points": [
+          "Token bucket or sliding window algorithm",
+          "Redis MULTI/EXEC for atomic operations",
+          "Lua scripting for complex atomic operations",
+          "Key expiration for automatic cleanup",
+          "Handling clock skew with Redis time",
+          "Fallback behavior when Redis is unavailable",
+          "Per-user vs global rate limiting considerations"
+        ],
+        "follow_up": "How would you test this rate limiter, and what metrics would you monitor in production?",
+        "time_minutes": 8,
+        "evaluation_criteria": {
+          "excellent": "Knows multiple algorithms with trade-offs, uses Lua for atomicity, considers distributed edge cases",
+          "good": "Can implement basic rate limiter, understands atomic operations need",
+          "needs_improvement": "Naive implementation without considering race conditions or distribution"
+        }
+      },
+      {
+        "id": 5,
+        "question": "Describe how you would set up a CI/CD pipeline for a Python microservice that deploys to Kubernetes. Include testing strategy, security scanning, and rollback procedures.",
+        "category": "implementation",
+        "skill_tested": "Docker",
+        "difficulty": "medium",
+        "expected_points": [
+          "Multi-stage Docker builds for small images",
+          "Unit tests, integration tests, contract tests",
+          "Container vulnerability scanning (Trivy, Snyk)",
+          "Helm charts or Kustomize for K8s deployments",
+          "Blue-green or canary deployment strategies",
+          "Health checks and readiness probes",
+          "Automated rollback on failure",
+          "Secrets management (Vault, K8s secrets)"
+        ],
+        "follow_up": "How would you handle database migrations in this pipeline without downtime?",
+        "time_minutes": 8,
+        "evaluation_criteria": {
+          "excellent": "Complete pipeline with security, testing, and deployment strategies, understands K8s deployment patterns",
+          "good": "Covers main CI/CD stages, knows basic K8s deployment",
+          "needs_improvement": "Missing testing or security, no rollback strategy"
+        }
+      }
+    ],
+
+    "hr_questions": [
+      {
+        "id": 1,
+        "question": "Tell me about a time when you had to make a significant technical decision that other senior engineers disagreed with. How did you handle the situation and what was the outcome?",
+        "competency": "leadership",
+        "star_focus": "action",
+        "positive_indicators": [
+          "Gathered data to support position",
+          "Listened to opposing viewpoints genuinely",
+          "Facilitated productive technical discussion",
+          "Made decision transparent with documented rationale",
+          "Accepted responsibility for outcome",
+          "Adapted approach when presented with valid concerns"
+        ],
+        "red_flags": [
+          "Pulled rank to force decision",
+          "Dismissed others' opinions without consideration",
+          "Unable to articulate the disagreement clearly",
+          "Blamed others when outcome was negative",
+          "Showed no flexibility in thinking"
+        ],
+        "follow_up_probes": [
+          "What specific data did you use to support your position?",
+          "Looking back, what would you do differently?",
+          "How did this experience change your approach to technical decisions?"
+        ],
+        "time_minutes": 6
+      },
+      {
+        "id": 2,
+        "question": "Describe a situation where you had to mentor a junior developer who was struggling. What was your approach and how did you measure success?",
+        "competency": "teamwork",
+        "star_focus": "action",
+        "positive_indicators": [
+          "Identified specific areas of struggle",
+          "Created structured learning plan",
+          "Provided psychological safety",
+          "Balanced hands-on help with independence",
+          "Set measurable goals and tracked progress",
+          "Adapted teaching style to individual needs"
+        ],
+        "red_flags": [
+          "Showed frustration or impatience",
+          "Did the work for them instead of teaching",
+          "Generic advice without personalization",
+          "No follow-up or progress tracking",
+          "Blamed the junior for not understanding"
+        ],
+        "follow_up_probes": [
+          "How did you adjust your communication style for this person?",
+          "What was the most challenging part of mentoring them?",
+          "How did this experience affect how you onboard new team members now?"
+        ],
+        "time_minutes": 5
+      },
+      {
+        "id": 3,
+        "question": "Tell me about a time when you had to deliver a project under significant time pressure while maintaining quality standards. How did you manage the trade-offs?",
+        "competency": "problem-solving",
+        "star_focus": "action",
+        "positive_indicators": [
+          "Prioritized features based on business impact",
+          "Communicated constraints clearly to stakeholders",
+          "Identified technical shortcuts that wouldn't create debt",
+          "Maintained critical quality gates (security, testing)",
+          "Documented deferred work for follow-up",
+          "Learned and applied improvements to future projects"
+        ],
+        "red_flags": [
+          "Cut corners on security or testing",
+          "Blamed unrealistic deadlines without solutions",
+          "Overworked team without sustainable plan",
+          "No communication with stakeholders about trade-offs",
+          "Quality issues in production as result"
+        ],
+        "follow_up_probes": [
+          "What specific quality standards did you maintain despite the pressure?",
+          "How did you communicate with stakeholders about what could and couldn't be delivered?",
+          "What systems did you put in place to prevent similar situations?"
+        ],
+        "time_minutes": 5
+      }
+    ],
+
+    "scenario_questions": [
+      {
+        "id": 1,
+        "scenario": "You're leading the backend team for a FinTech startup. During a routine deployment on Friday afternoon, the payment processing service starts returning errors. The error rate climbs to 15% and customers are complaining on social media. Your CEO is asking for updates every 5 minutes. The on-call engineer suspects it's related to the new deployment, but reverting would take 20 minutes, and the root cause isn't clear yet.",
+        "question": "Walk me through exactly how you would handle this situation from the moment you're alerted.",
+        "type": "pressure",
+        "skills_tested": ["Leadership", "System Design", "Communication"],
+        "decision_points": [
+          "Immediate rollback vs investigation",
+          "Stakeholder communication strategy",
+          "Team coordination and delegation",
+          "Customer communication decision",
+          "Post-incident planning"
+        ],
+        "acceptable_approaches": [
+          {
+            "approach": "Immediate rollback while investigating in parallel",
+            "pros": ["Minimizes customer impact", "Buys time for proper investigation"],
+            "cons": ["May lose debugging context", "20 minute recovery time"]
+          },
+          {
+            "approach": "Quick investigation (5-10 min) then decide on rollback",
+            "pros": ["May find simple fix faster", "Maintains debugging context"],
+            "cons": ["Extended customer impact if investigation takes longer"]
+          },
+          {
+            "approach": "Feature flag to disable new code path without full rollback",
+            "pros": ["Fastest mitigation if available", "Preserves deployment"],
+            "cons": ["Only works if feature flags exist", "Partial solution"]
+          }
+        ],
+        "excellent_response_traits": [
+          "Clear incident command structure",
+          "Parallel workstreams: mitigation AND investigation AND communication",
+          "Specific communication cadence for stakeholders",
+          "Customer-first thinking in decisions",
+          "Already thinking about post-mortem"
+        ],
+        "time_minutes": 10
+      },
+      {
+        "id": 2,
+        "scenario": "Your team is responsible for a critical microservice that other teams depend on. The product team wants you to add a major new feature that requires significant changes to the API. Three other teams have built integrations with your current API. The timeline is aggressive - 6 weeks. Your team estimates the work at 8-10 weeks if done properly with backwards compatibility, or 5 weeks if you break the existing API and force other teams to migrate.",
+        "question": "How would you approach this situation? Who would you involve in the decision, and what factors would influence your recommendation?",
+        "type": "resource",
+        "skills_tested": ["System Design", "Communication", "Leadership"],
+        "decision_points": [
+          "Stakeholder identification and involvement",
+          "Technical approach (versioning, migration path)",
+          "Timeline negotiation strategy",
+          "Risk assessment and communication",
+          "Cross-team coordination"
+        ],
+        "acceptable_approaches": [
+          {
+            "approach": "Negotiate for 8-10 weeks with full backwards compatibility",
+            "pros": ["No disruption to other teams", "Clean technical solution"],
+            "cons": ["May miss business deadline", "Higher initial investment"]
+          },
+          {
+            "approach": "Phased approach: core feature in 6 weeks, full compatibility in follow-up",
+            "pros": ["Meets deadline", "Manageable technical debt"],
+            "cons": ["Requires clear commitment for phase 2", "Some integration pain"]
+          },
+          {
+            "approach": "Coordinate breaking change with migration support for other teams",
+            "pros": ["Fastest delivery", "Clean break"],
+            "cons": ["Shifts work to other teams", "May create organizational friction"]
+          }
+        ],
+        "excellent_response_traits": [
+          "Involves all stakeholders early in discussion",
+          "Presents options with clear trade-offs",
+          "Considers organizational impact, not just technical",
+          "Has clear recommendation with rationale",
+          "Plans for the decision to change"
+        ],
+        "time_minutes": 8
+      }
+    ]
+  }
+}
