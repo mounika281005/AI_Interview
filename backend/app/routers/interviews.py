@@ -29,6 +29,7 @@ from fastapi import (
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, func
 from sqlalchemy.orm import selectinload
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.database import get_db
 from app.models.user import User
@@ -158,9 +159,10 @@ async def create_interview_session(
     )
     generation_time_ms = int((time.time() - generation_started) * 1000)
 
-    session_settings = new_session.settings or {}
+    session_settings = dict(new_session.settings or {})
     session_settings["question_generation_ms"] = generation_time_ms
     new_session.settings = session_settings
+    flag_modified(new_session, "settings")
     
     # Create question records
     for i, q in enumerate(generated_questions, start=1):

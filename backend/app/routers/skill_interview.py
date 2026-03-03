@@ -30,6 +30,7 @@ from fastapi import (
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, func
 from sqlalchemy.orm import selectinload
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.database import get_db
 from app.models.user import User
@@ -284,9 +285,10 @@ async def start_skill_interview(
         # Use fallback questions
         generated_questions = _get_fallback_questions(tech_name, request.num_questions, request.difficulty)
     generation_time_ms = int((time.time() - generation_started) * 1000)
-    session_settings = new_session.settings or {}
+    session_settings = dict(new_session.settings or {})
     session_settings["question_generation_ms"] = generation_time_ms
     new_session.settings = session_settings
+    flag_modified(new_session, "settings")
     
     debug_log("Questions generated", {"count": len(generated_questions)})
     
@@ -461,9 +463,10 @@ async def start_resume_interview(
             categories=["behavioral", "technical"]
         )
     generation_time_ms = int((time.time() - generation_started) * 1000)
-    session_settings = new_session.settings or {}
+    session_settings = dict(new_session.settings or {})
     session_settings["question_generation_ms"] = generation_time_ms
     new_session.settings = session_settings
+    flag_modified(new_session, "settings")
 
     debug_log("Questions generated", {"count": len(generated_questions)})
 
@@ -760,7 +763,7 @@ async def generate_adaptive_followup(
             detail="Question not found"
         )
 
-    settings_data = session.settings or {}
+    settings_data = dict(session.settings or {})
     followup_count = int(settings_data.get("adaptive_followups_count", 0))
     if followup_count >= 3:
         return {
@@ -816,6 +819,7 @@ async def generate_adaptive_followup(
     session.total_questions = (session.total_questions or 0) + 1
     settings_data["adaptive_followups_count"] = followup_count + 1
     session.settings = settings_data
+    flag_modified(session, "settings")
 
     await db.commit()
 
@@ -1114,9 +1118,10 @@ async def submit_interview(
     session.strengths = overall_strengths
     session.weaknesses = overall_improvements
     session.summary = performance_summary
-    session_settings = session.settings or {}
+    session_settings = dict(session.settings or {})
     session_settings["evaluation_total_ms"] = int((time.time() - submit_started) * 1000)
     session.settings = session_settings
+    flag_modified(session, "settings")
 
     # Update user statistics
     current_user.update_statistics(percentage)
