@@ -61,3 +61,5 @@ httpx==0.26.0
 # Development
 black==23.12.1
 isort==5.13.2
+
+asyncpg==0.29.0
