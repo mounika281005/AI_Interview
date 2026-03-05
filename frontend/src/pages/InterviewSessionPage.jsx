@@ -70,7 +70,7 @@ function InterviewSessionPage() {
         };
         
         loadSession();
-    }, [sessionId]);
+    }, [sessionId, navigate]);
     
     // Submit answer for current question
     const handleSubmitAnswer = async () => {

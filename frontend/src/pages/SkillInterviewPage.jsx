@@ -529,7 +529,6 @@ function InterviewSession({
     const [recordings, setRecordings] = useState({});
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [viewMode, setViewMode] = useState('single'); // 'single' or 'all'
-    const [generatingFollowup, setGeneratingFollowup] = useState(false);
     const [followupGeneratedFor, setFollowupGeneratedFor] = useState({});
 
     const questions = session.questions || [];
@@ -559,12 +558,10 @@ function InterviewSession({
             !followupGeneratedFor[currentQuestion.id] &&
             onGenerateAdaptiveFollowup
         ) {
-            setGeneratingFollowup(true);
             const followupResult = await onGenerateAdaptiveFollowup(
                 currentQuestion.id,
                 currentAnswer.textAnswer || null
             );
-            setGeneratingFollowup(false);
 
             if (followupResult?.success) {
                 setFollowupGeneratedFor(prev => ({ ...prev, [currentQuestion.id]: true }));
@@ -983,7 +980,6 @@ function ResumeInterviewSetup({ onStart, loading }) {
 // =============================================================================
 
 function SkillInterviewPage() {
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const interviewType = searchParams.get('type'); // 'resume' or null
 

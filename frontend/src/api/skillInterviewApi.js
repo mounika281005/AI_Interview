@@ -10,7 +10,7 @@
  * ==============================================================================
  */
 
-import apiClient, { parseError, createFormData } from './client';
+import apiClient, { parseError } from './client';
 import { API_BASE_URL } from './config';
 
 // Debug logging only in development

@@ -78,9 +78,11 @@ export const UPLOAD_LIMITS = {
     ALLOWED_AUDIO_TYPES: ['audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/webm', 'audio/m4a'],
 };
 
-export default {
+const apiConfig = {
     API_BASE_URL,
     ENDPOINTS,
     REQUEST_TIMEOUT,
     UPLOAD_LIMITS,
 };
+
+export default apiConfig;

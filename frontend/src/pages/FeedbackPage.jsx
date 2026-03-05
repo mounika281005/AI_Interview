@@ -380,10 +380,4 @@ function getRatingClass(rating) {
     return 'needs-work';
 }
 
-function formatCategory(category) {
-    return category
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, c => c.toUpperCase());
-}
-
 export default FeedbackPage;

@@ -616,7 +616,7 @@ export function useFeedback(sessionId) {
     };
 }
 
-export default {
+const apiHooks = {
     AuthProvider,
     useAuth,
     useApi,
@@ -626,3 +626,5 @@ export default {
     useDashboard,
     useFeedback,
 };
+
+export default apiHooks;
