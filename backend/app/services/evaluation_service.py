@@ -1,4 +1,4 @@
-"""
+﻿"""
 ==============================================================================
 AI Mock Interview System - NLP Evaluation Service
 ==============================================================================
@@ -13,6 +13,7 @@ Version: 1.0.0
 
 import asyncio
 import logging
+import re
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 
@@ -294,7 +295,7 @@ class NLPEvaluationService:
                 for match in matches[:3]:  # Top 3 issues
                     if match.replacements:
                         suggestions.append(
-                            f"Consider: '{match.context}' → '{match.replacements[0]}'"
+                            f"Consider: '{match.context}' â†’ '{match.replacements[0]}'"
                         )
                 
                 return EvaluationScore(
@@ -305,20 +306,66 @@ class NLPEvaluationService:
             except Exception as e:
                 logger.warning(f"Grammar check failed: {e}")
         
-        # Basic fallback — no grammar tool available, estimate conservatively
-        # Use a simple heuristic: penalize very short or very long sentences
-        words = response.split()
+        # Heuristic fallback (no grammar tool available).
+        # Keeps grammar scores dynamic instead of fixed values.
+        words = re.findall(r"[A-Za-z']+", response)
         word_count = len(words)
-        if word_count < 5:
-            score = 30.0
-        elif word_count < 15:
-            score = 45.0
-        else:
-            score = 55.0
+        if word_count == 0:
+            return EvaluationScore(
+                score=0.0,
+                details="No valid text for grammar evaluation",
+                suggestions=["Provide a clear response to evaluate grammar"]
+            )
+
+        sentences = [s.strip() for s in re.split(r"[.!?]+", response) if s.strip()]
+        sentence_count = max(1, len(sentences))
+
+        # Positive components
+        length_component = min(20.0, word_count * 0.6)
+        starts_upper = sum(1 for s in sentences if s[:1].isupper())
+        capitalization_ratio = starts_upper / sentence_count
+        capitalization_component = capitalization_ratio * 20.0
+        punctuation_component = 15.0 if re.search(r"[.!?]$", response.strip()) else 5.0
+        unique_ratio = len({w.lower() for w in words}) / word_count
+        diversity_component = min(15.0, max(0.0, (unique_ratio - 0.3) * 50.0))
+
+        # Penalties
+        repeat_penalty = max(0.0, (1.0 - unique_ratio) * 18.0)
+        short_sentence_penalty = 10.0 if word_count < 8 else 0.0
+        runon_penalty = 8.0 if word_count / sentence_count > 35 else 0.0
+        lower_start_penalty = (1.0 - capitalization_ratio) * 10.0
+
+        score = (
+            25.0
+            + length_component
+            + capitalization_component
+            + punctuation_component
+            + diversity_component
+            - repeat_penalty
+            - short_sentence_penalty
+            - runon_penalty
+            - lower_start_penalty
+        )
+        score = max(0.0, min(100.0, score))
+
+        suggestions = []
+        if capitalization_ratio < 0.7:
+            suggestions.append("Start sentences with capital letters")
+        if not re.search(r"[.!?]$", response.strip()):
+            suggestions.append("End sentences with proper punctuation")
+        if unique_ratio < 0.4:
+            suggestions.append("Reduce repetition and use more varied wording")
+        if word_count < 8:
+            suggestions.append("Provide more complete sentences for better grammar quality")
+
         return EvaluationScore(
-            score=score,
-            details="Basic grammar check (install LanguageTool for detailed analysis)",
-            suggestions=["Use clearer grammar and sentence structure for better clarity"]
+            score=round(score, 1),
+            details=(
+                "Heuristic grammar check "
+                f"(words={word_count}, sentences={sentence_count}, "
+                f"capitalization={capitalization_ratio:.2f}, diversity={unique_ratio:.2f})"
+            ),
+            suggestions=suggestions or ["Use clearer grammar and sentence structure for better clarity"]
         )
     
     def _evaluate_fluency(self, response: str) -> EvaluationScore:
@@ -532,3 +579,4 @@ def get_evaluation_service() -> NLPEvaluationService:
     if _evaluation_service is None:
         _evaluation_service = NLPEvaluationService()
     return _evaluation_service
+

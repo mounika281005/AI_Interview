@@ -1105,6 +1105,40 @@ async def submit_interview(
     # Get unique items
     overall_strengths = list(set(all_strengths))[:5]
     overall_improvements = list(set(all_improvements))[:5]
+
+    # Derive feedback fields expected by /feedback UI
+    if percentage >= 80:
+        performance_rating = "excellent"
+    elif percentage >= 60:
+        performance_rating = "good"
+    elif percentage >= 40:
+        performance_rating = "average"
+    else:
+        performance_rating = "needs_improvement"
+
+    if percentage >= 80:
+        readiness_level = "ready"
+        estimated_practice_needed = 0
+    elif percentage >= 65:
+        readiness_level = "almost_ready"
+        estimated_practice_needed = 2
+    elif percentage >= 50:
+        readiness_level = "needs_practice"
+        estimated_practice_needed = 5
+    else:
+        readiness_level = "not_ready"
+        estimated_practice_needed = 10
+
+    improvement_suggestions = [
+        {
+            "priority": idx + 1,
+            "category": "general",
+            "suggestion": suggestion,
+            "action_items": [],
+            "resources": [],
+        }
+        for idx, suggestion in enumerate(overall_improvements[:5])
+    ]
     
     # Update session - use complete_interview() to calculate duration
     session.complete_interview()  # Sets status=COMPLETED, completed_at, and calculates duration_seconds
@@ -1117,6 +1151,7 @@ async def submit_interview(
     session.technical_score = (total_similarity / num_questions) * 20 if num_questions else 0
     session.strengths = overall_strengths
     session.weaknesses = overall_improvements
+    session.suggestions = overall_improvements
     session.summary = performance_summary
     session_settings = dict(session.settings or {})
     session_settings["evaluation_total_ms"] = int((time.time() - submit_started) * 1000)
@@ -1130,13 +1165,19 @@ async def submit_interview(
     feedback = InterviewFeedback(
         session_id=session.id,
         user_id=current_user.id,
-        performance_rating=grade,
+        performance_rating=performance_rating,
         executive_summary=performance_summary,
         communication_score=total_fluency / num_questions * 20 if num_questions else 0,
         technical_knowledge_score=total_similarity / num_questions * 20 if num_questions else 0,
         structure_score=total_structure / num_questions * 20 if num_questions else 0,
         strengths=[{"area": s, "description": s} for s in overall_strengths],
         weaknesses=[{"area": w, "description": w} for w in overall_improvements],
+        improvement_suggestions=improvement_suggestions,
+        recommended_resources=[],
+        practice_topics=overall_improvements,
+        job_readiness_score=round(percentage, 1),
+        readiness_level=readiness_level,
+        estimated_practice_needed=estimated_practice_needed,
     )
     db.add(feedback)
 

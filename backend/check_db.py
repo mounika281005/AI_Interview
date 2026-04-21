@@ -155,6 +155,62 @@ def main() -> None:
             avg_rows,
         )
 
+        # 3b) Score summary and score trend table
+        score_summary_rows = query(
+            conn,
+            """
+            SELECT
+              COUNT(*) AS scored_sessions,
+              ROUND(AVG(CAST(overall_score AS REAL)), 2) AS avg_overall_score,
+              ROUND(MAX(CAST(overall_score AS REAL)), 2) AS best_overall_score,
+              ROUND(MIN(CAST(overall_score AS REAL)), 2) AS lowest_overall_score
+            FROM interview_sessions
+            WHERE status IN ('completed','evaluated')
+              AND overall_score IS NOT NULL
+            """,
+        )
+        print_table(
+            "Score Summary (0-100 Scale)",
+            [
+                "scored_sessions",
+                "avg_overall_score",
+                "best_overall_score",
+                "lowest_overall_score",
+            ],
+            score_summary_rows,
+        )
+
+        score_rows = query(
+            conn,
+            """
+            SELECT
+              id,
+              interview_type,
+              total_questions,
+              ROUND(CAST(overall_score AS REAL), 2) AS overall_score,
+              grade,
+              created_at
+            FROM interview_sessions
+            WHERE status IN ('completed','evaluated')
+              AND overall_score IS NOT NULL
+            ORDER BY created_at DESC
+            LIMIT ?
+            """,
+            (args.limit,),
+        )
+        print_table(
+            "Recent Session Scores",
+            [
+                "id",
+                "interview_type",
+                "total_questions",
+                "overall_score",
+                "grade",
+                "created_at",
+            ],
+            score_rows,
+        )
+
         # 4) Grouped by question count
         by_q_rows = query(
             conn,
@@ -204,4 +260,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

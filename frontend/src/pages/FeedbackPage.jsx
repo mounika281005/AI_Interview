@@ -91,6 +91,14 @@ function FeedbackPage() {
             </div>
         );
     }
+
+    const mainScore = (
+        scores?.total_score ??
+        feedback?.total_score ??
+        session?.overall_score ??
+        feedback?.job_readiness_score ??
+        0
+    );
     
     return (
         <div className="feedback-page">
@@ -121,13 +129,13 @@ function FeedbackPage() {
                                 className="score-progress"
                                 cx="50" cy="50" r="45"
                                 style={{
-                                    strokeDasharray: `${(feedback?.job_readiness_score || scores?.total_score || session?.overall_score || 0) * 2.83} 283`
+                                    strokeDasharray: `${mainScore * 2.83} 283`
                                 }}
                             />
                         </svg>
                         <div className="score-value">
                             <span className="score-number">
-                                {Math.round(feedback?.job_readiness_score || scores?.total_score || session?.overall_score || 0)}
+                                {Math.round(mainScore)}
                             </span>
                             <span className="score-max">/100</span>
                         </div>

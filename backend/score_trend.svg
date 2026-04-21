@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="100%" height="100%" fill="white"/>
+  <text x="600.0" y="36" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" fill="#111827" font-weight="700">
+    Interview Score Trend (0-100)
+  </text>
+  <text x="600.0" y="58" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" fill="#4b5563">
+    Sessions: 14 | Avg: 64.74 | Best: 88.29 | Latest: 88.29
+  </text>
+
+  <line x1="90" y1="610.0" x2="1150" y2="610.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="615.0" text-anchor="end" font-size="14" fill="#374151">0</text> <line x1="90" y1="502.0" x2="1150" y2="502.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="507.0" text-anchor="end" font-size="14" fill="#374151">20</text> <line x1="90" y1="394.0" x2="1150" y2="394.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="399.0" text-anchor="end" font-size="14" fill="#374151">40</text> <line x1="90" y1="286.0" x2="1150" y2="286.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="291.0" text-anchor="end" font-size="14" fill="#374151">60</text> <line x1="90" y1="178.0" x2="1150" y2="178.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="183.0" text-anchor="end" font-size="14" fill="#374151">80</text> <line x1="90" y1="70.0" x2="1150" y2="70.0" stroke="#e5e7eb" stroke-width="1"/> <text x="78" y="75.0" text-anchor="end" font-size="14" fill="#374151">100</text>
+  <line x1="90" y1="70" x2="90" y2="610" stroke="#111827" stroke-width="2"/>
+  <line x1="90" y1="610" x2="1150" y2="610" stroke="#111827" stroke-width="2"/>
+
+  <polyline points="90.0,357.8 171.5,322.2 253.1,371.3 334.6,324.9 416.2,260.8 497.7,196.4 579.2,293.2 660.8,264.4 742.3,267.1 823.8,263.3 905.4,202.3 986.9,178.0 1068.5,210.4 1150.0,133.3" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="90.0" cy="357.8" r="4.5" fill="#2563eb"/><text x="90.0" y="345.8" text-anchor="middle" font-size="13" fill="#1f2937">46.7</text><circle cx="171.5" cy="322.2" r="4.5" fill="#2563eb"/><circle cx="253.1" cy="371.3" r="4.5" fill="#2563eb"/><circle cx="334.6" cy="324.9" r="4.5" fill="#2563eb"/><circle cx="416.2" cy="260.8" r="4.5" fill="#2563eb"/><circle cx="497.7" cy="196.4" r="4.5" fill="#2563eb"/><circle cx="579.2" cy="293.2" r="4.5" fill="#2563eb"/><circle cx="660.8" cy="264.4" r="4.5" fill="#2563eb"/><circle cx="742.3" cy="267.1" r="4.5" fill="#2563eb"/><circle cx="823.8" cy="263.3" r="4.5" fill="#2563eb"/><circle cx="905.4" cy="202.3" r="4.5" fill="#2563eb"/><circle cx="986.9" cy="178.0" r="4.5" fill="#2563eb"/><circle cx="1068.5" cy="210.4" r="4.5" fill="#2563eb"/><circle cx="1150.0" cy="133.3" r="4.5" fill="#2563eb"/><text x="1150.0" y="121.3" text-anchor="middle" font-size="13" fill="#1f2937">88.3</text>
+  
+    <text x="90.0" y="640" text-anchor="middle" font-size="13" fill="#374151">2026-02-14</text>
+    <text x="660.8" y="640" text-anchor="middle" font-size="13" fill="#374151">2026-03-03</text>
+    <text x="1150.0" y="640" text-anchor="middle" font-size="13" fill="#374151">2026-03-06</text>
+    
+
+  <text x="620.0" y="678" text-anchor="middle" font-size="14" fill="#374151">Session timeline</text>
+  <text transform="translate(24,340.0) rotate(-90)" text-anchor="middle" font-size="14" fill="#374151">Score</text>
+</svg>
